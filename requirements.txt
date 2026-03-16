@@ -1,0 +1,3 @@
+# Python deps (pip install -r requirements.txt)
+# TeX (pdflatex) install instructions: see README.md in project root.
+reportlab>=4.4.0
