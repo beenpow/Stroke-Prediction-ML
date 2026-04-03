@@ -5,7 +5,17 @@
 ### Python (PDF build and scripts)
 
 ```bash
+python3 -m venv .venv
+source .venv/bin/activate   # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
+```
+
+For Jupyter notebooks (e.g. `baseline_final.ipynb`), open the **repository root** as the workspace so imports like `stroke_data` and paths under `data/` resolve correctly.
+
+**macOS + XGBoost:** if `import xgboost` still fails after `pip install`, install OpenMP once:
+
+```bash
+brew install libomp
 ```
 
 ### TeX (for building the proposal PDF with `pdflatex`)
