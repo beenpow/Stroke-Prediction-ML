@@ -8,3 +8,6 @@ env/
 
 # Local editor settings (optional;)
 .vscode/settings.json
+
+# pycache
+__pycache__
