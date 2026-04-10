@@ -1,8 +1,23 @@
+from pathlib import Path
+
 import pandas as pd
 from sklearn.model_selection import train_test_split
 
+
+def _repo_root() -> Path:
+    """This file lives in ``src/``; parent of ``src`` is the repository root."""
+    return Path(__file__).resolve().parent.parent
+
+
+def _resolve_csv_path(filename: str) -> str:
+    p = Path(filename)
+    if p.is_absolute():
+        return str(p)
+    return str(_repo_root() / p)
+
+
 def get_stroke_data(filename="data/knn-standardize-distance.cv"):
-    df = pd.read_csv(filename)
+    df = pd.read_csv(_resolve_csv_path(filename))
 
     # drop id column
     df = df.drop(["id"], axis=1)
@@ -24,7 +39,7 @@ def get_stroke_data(filename="data/knn-standardize-distance.cv"):
     return X_train, X_val, X_test, y_train, y_val, y_test
 
 def get_stroke_data_for_cv(filename="data/knn-standardize-distance.cv"):
-    df = pd.read_csv(filename)
+    df = pd.read_csv(_resolve_csv_path(filename))
 
     # drop id column
     df = df.drop(["id"], axis=1)

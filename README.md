@@ -10,7 +10,7 @@ source .venv/bin/activate   # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
-For Jupyter notebooks (e.g. `baseline_final.ipynb`), open the **repository root** as the workspace so imports like `stroke_data` and paths under `data/` resolve correctly.
+Notebooks and Python helpers live under **`src/`** (e.g. `src/baseline_final.ipynb`, `src/stroke_data.py`). Open the **repository root** as the workspace. The first code cell in baseline notebooks adds `src` to `sys.path` so `from stroke_data import ...` works; `stroke_data` resolves CSV paths from the repo root. For `src/preprocessing.ipynb`, the first cell switches to the repo root when the kernel’s working directory is `src/`, so `data/...` paths stay valid.
 
 **macOS + XGBoost:** if `import xgboost` still fails after `pip install`, install OpenMP once:
 
