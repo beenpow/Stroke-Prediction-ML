@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 from stroke_data import get_stroke_data_for_cv
 from sklearn.metrics import accuracy_score, f1_score, precision_score, recall_score
 # X_train, X_test, y_train, and y_test are defined here.
-from custom_gridsearch import *
+from src.baseline_models.custom_gridsearch import *
 
 ## Using Scikit learn Multi-layer perceptron (MLP)
 ## https://scikit-learn.org/stable/modules/neural_networks_supervised.html
@@ -45,3 +45,4 @@ print("Test F1 = ", f1(y_test, mlp_preds))
 print("Test Precision = ", precision(y_test, mlp_preds))
 print("Test Recall = ", recall(y_test, mlp_preds))
 
+print(clf.get_params())
