@@ -92,6 +92,8 @@ def random_forest(X_train, X_test, y_train, y_test):
                     "recall": recall_score(y_test, rf_preds)},
     }
 
+    return results
+
 def xg_boost(X_train, X_test, y_train, y_test):
     xgb = XGBClassifier(eta=1, gamma=1, reg_lambda=0.5, max_depth=15, objective='binary:logistic', subsample=1)
 
