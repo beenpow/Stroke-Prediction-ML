@@ -17,6 +17,7 @@ import sklearn
 import scipy
 import numpy as np
 from stroke_data import get_stroke_data_for_cv, get_stroke_data
+from pprint import pprint
 
 from sklearn.linear_model import LogisticRegression
 from sklearn.svm import SVC
@@ -74,7 +75,7 @@ def support_vector_machine(X_train, X_test, y_train, y_test):
     return results
 
 def random_forest(X_train, X_test, y_train, y_test):
-    rf = RandomForestClassifier(bootstrap=True, class_weight='balanced_subsample', max_depth=15, max_features=None, max_leaf_nodes=15, n_estimators=20)
+    rf = RandomForestClassifier(bootstrap=True, class_weight='balanced_subsample', max_depth=10, max_features=None, max_leaf_nodes=15, n_estimators=20)
 
     rf.fit(X=X_train, y=y_train)
 
@@ -95,7 +96,7 @@ def random_forest(X_train, X_test, y_train, y_test):
     return results
 
 def xg_boost(X_train, X_test, y_train, y_test):
-    xgb = XGBClassifier(eta=1, gamma=1, reg_lambda=0.5, max_depth=15, objective='binary:logistic', subsample=1)
+    xgb = XGBClassifier(eta=1, gamma=2, reg_lambda=0.5, max_depth=6, objective='binary:logistic', subsample=0.1)
 
     xgb.fit(X=X_train, y=y_train)
 
@@ -137,8 +138,8 @@ def naive_bayes(X_train, X_test, y_train, y_test):
     return results
 
 def k_nearest_neighbors(X_train, X_test, y_train, y_test):
-    knn = KNeighborsClassifier(algorithm='auto', leaf_size=10, metric='minkowski', n_neighbors=5, weights='uniform')
-
+    knn = KNeighborsClassifier(algorithm='auto', leaf_size=30, metric='minkowski', metric_params=None, n_jobs= None, n_neighbors=1, p=2, weights='uniform') 
+    
     knn.fit(X=X_train, y=y_train)
 
     knn_preds = knn.predict(X_test)
@@ -192,3 +193,6 @@ def run_all_baselines(X_train, X_test, y_train, y_test):
     results['mlp'] = multi_layer_perceptron(X_train, X_test, y_train, y_test)
 
     return results
+
+X_train, X_test, y_train, y_test = get_stroke_data_for_cv("data/knn-standardize-distance.csv")
+pprint(run_all_baselines(X_train, X_test, y_train, y_test))
