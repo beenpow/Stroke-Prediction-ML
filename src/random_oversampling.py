@@ -17,6 +17,7 @@ import sklearn
 import scipy
 import numpy as np
 from stroke_data import get_stroke_data_for_cv, get_stroke_data
+from all_baselines import run_all_baselines
 from pprint import pprint
 
 from sklearn.linear_model import LogisticRegression
@@ -25,6 +26,7 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.naive_bayes import GaussianNB
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.neural_network import MLPClassifier
+from imblearn.over_sampling import RandomOverSampler
 
 from xgboost import XGBClassifier
 
@@ -33,7 +35,7 @@ from sklearn.metrics import accuracy_score, f1_score, precision_score, recall_sc
 def logistic_regression(X_train, X_test, y_train, y_test):
     results = {}
 
-    lr = LogisticRegression(random_state=42, C=0.1, class_weight='balanced', solver='newton-cg')
+    lr = LogisticRegression(random_state=42, C=0.001, class_weight='balanced', solver='liblinear')
 
     lr.fit(X=X_train, y=y_train)
 
@@ -54,7 +56,7 @@ def logistic_regression(X_train, X_test, y_train, y_test):
     return results
 
 def support_vector_machine(X_train, X_test, y_train, y_test):
-    svm = SVC(C=10.0, class_weight='balanced', gamma=0.01, kernel='rbf')
+    svm = SVC(C=1.0, class_weight=None, gamma=100, kernel='rbf')
 
     svm.fit(X=X_train, y=y_train)
 
@@ -75,7 +77,7 @@ def support_vector_machine(X_train, X_test, y_train, y_test):
     return results
 
 def random_forest(X_train, X_test, y_train, y_test):
-    rf = RandomForestClassifier(bootstrap=True, class_weight='balanced_subsample', max_depth=10, max_features=None, max_leaf_nodes=15, n_estimators=20)
+    rf = RandomForestClassifier(bootstrap=True, class_weight='balanced_subsample', max_depth=None, max_features=None, max_leaf_nodes=15, n_estimators=15)
 
     rf.fit(X=X_train, y=y_train)
 
@@ -160,7 +162,7 @@ def k_nearest_neighbors(X_train, X_test, y_train, y_test):
     return results
 
 def multi_layer_perceptron(X_train, X_test, y_train, y_test):
-    mlp = MLPClassifier(random_state=42, alpha=0.001, hidden_layer_sizes=(100, 100, 100, 100, 100), max_iter=200, solver='adam')
+    mlp = MLPClassifier(random_state=42, alpha=0.0001, hidden_layer_sizes=(100, 100, 100, 100, 100), max_iter=200, solver='adam')
 
     mlp.fit(X=X_train, y=y_train)
 
@@ -181,7 +183,7 @@ def multi_layer_perceptron(X_train, X_test, y_train, y_test):
     return results
 
 
-def run_all_baselines(X_train, X_test, y_train, y_test):
+def run_all_ro(X_train, X_test, y_train, y_test):
     results = {}
 
     results['lr'] = logistic_regression(X_train, X_test, y_train, y_test)
@@ -194,5 +196,12 @@ def run_all_baselines(X_train, X_test, y_train, y_test):
 
     return results
 
-# X_train, X_test, y_train, y_test = get_stroke_data_for_cv("data/knn-standardize-distance.csv")
-# pprint(run_all_baselines(X_train, X_test, y_train, y_test))
+X_train, X_test, y_train, y_test = get_stroke_data_for_cv("data/knn-standardize-distance.csv")
+ros = RandomOverSampler(random_state=42)
+X_train_res, y_train_res = ros.fit_resample(X_train, y_train)
+
+print("Baselines")
+pprint(run_all_baselines(X_train_res, X_test, y_train_res, y_test))
+
+print("RO")
+pprint(run_all_ro(X_train, X_test, y_train, y_test))
