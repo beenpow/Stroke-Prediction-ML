@@ -116,7 +116,7 @@ def logistic_regression_features():
     lr = LogisticRegression(C=0.001, class_weight='balanced', solver='liblinear')
     lr.fit(X_train, y_train)
 
-    model = SelectFromModel(lr, prefit=True)
+    model = SelectFromModel(lr, prefit=True, threshold= "mean")
     X_new_train = model.transform(X_train)
     X_new_test = model.transform(X_test)
   
@@ -127,7 +127,7 @@ def support_vector_machine_features():
     svm = SVC(C=10.0, class_weight='balanced', gamma=1, kernel='linear')
     svm.fit(X_train, y_train)
 
-    model = SelectFromModel(svm, prefit=True)
+    model = SelectFromModel(svm, prefit=True, threshold= "mean")
     X_new_train = model.transform(X_train)
     X_new_test = model.transform(X_test)
 
