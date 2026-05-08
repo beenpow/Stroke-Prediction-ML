@@ -138,7 +138,7 @@ def random_forest_features():
     clf = RandomForestClassifier(bootstrap=False, class_weight='balanced', max_depth=5, max_features=None, max_leaf_nodes=None, n_estimators=15)
     clf.fit(X_train, y_train)
 
-    model = SelectFromModel(clf, prefit=True, threshold="median")
+    model = SelectFromModel(clf, prefit=True, threshold="mean")
 
     X_new_train = model.transform(X_train)
     X_new_test = model.transform(X_test)
@@ -151,7 +151,7 @@ def xg_boost_features():
     xgb = XGBClassifier(eta=1, gamma=2, reg_lambda=0.5, max_depth=6, objective='binary:logistic', subsample=0.1, scale_pos_weight=19)
     xgb.fit(X_train, y_train)
 
-    model = SelectFromModel(xgb, prefit=True, threshold="median")
+    model = SelectFromModel(xgb, prefit=True, threshold="mean")
 
     X_new_train = model.transform(X_train)
     X_new_test = model.transform(X_test)
