@@ -49,26 +49,26 @@ def logistic_regression(X_train, X_test, y_train, y_test):
 
     return results
 
-def support_vector_machine(X_train, X_test, y_train, y_test):
-    svm = SVC(C=10.0, class_weight='balanced', gamma=1, kernel='rbf')
+# def support_vector_machine(X_train, X_test, y_train, y_test):
+#     svm = SVC(C=10.0, class_weight='balanced', gamma=1, kernel='rbf')
 
-    svm.fit(X=X_train, y=y_train)
+#     svm.fit(X=X_train, y=y_train)
 
-    svm_train_preds = svm.predict(X_train)
-    svm_preds = svm.predict(X_test)
+#     svm_train_preds = svm.predict(X_train)
+#     svm_preds = svm.predict(X_test)
 
-    results = {
-        "train": {"accuracy": accuracy_score(y_train, svm_train_preds),
-                    "f1": f1_score(y_train, svm_train_preds),
-                    "precision": precision_score(y_train, svm_train_preds),
-                    "recall": recall_score(y_train, svm_train_preds)},
-        "test": {"accuracy": accuracy_score(y_test, svm_preds),
-                    "f1": f1_score(y_test, svm_preds),
-                    "precision": precision_score(y_test, svm_preds),
-                    "recall": recall_score(y_test, svm_preds)},
-    }
+#     results = {
+#         "train": {"accuracy": accuracy_score(y_train, svm_train_preds),
+#                     "f1": f1_score(y_train, svm_train_preds),
+#                     "precision": precision_score(y_train, svm_train_preds),
+#                     "recall": recall_score(y_train, svm_train_preds)},
+#         "test": {"accuracy": accuracy_score(y_test, svm_preds),
+#                     "f1": f1_score(y_test, svm_preds),
+#                     "precision": precision_score(y_test, svm_preds),
+#                     "recall": recall_score(y_test, svm_preds)},
+#     }
 
-    return results
+#     return results
 
 def random_forest(X_train, X_test, y_train, y_test):
     rf = RandomForestClassifier(bootstrap=False, class_weight='balanced_subsample', max_depth=None, max_features=None, max_leaf_nodes=None, n_estimators=15)
@@ -123,15 +123,15 @@ def logistic_regression_features():
     return logistic_regression(X_new_train, X_new_test, y_train, y_test)
 
 
-def support_vector_machine_features():
-    svm = SVC(C=10.0, class_weight='balanced', gamma=1, kernel='linear')
-    svm.fit(X_train, y_train)
+# def support_vector_machine_features():
+#     svm = SVC(C=10.0, class_weight='balanced', gamma=1, kernel='linear')
+#     svm.fit(X_train, y_train)
 
-    model = SelectFromModel(svm, prefit=True)
-    X_new_train = model.transform(X_train)
-    X_new_test = model.transform(X_test)
+#     model = SelectFromModel(svm, prefit=True)
+#     X_new_train = model.transform(X_train)
+#     X_new_test = model.transform(X_test)
 
-    return support_vector_machine(X_new_train, X_new_test, y_train, y_test)
+#     return support_vector_machine(X_new_train, X_new_test, y_train, y_test)
 
 def random_forest_features():
 
@@ -164,7 +164,7 @@ def run_all_l1_features():
     results = {}
 
     results['lr'] = logistic_regression_features()
-    results['svm'] = support_vector_machine_features()
+    # results['svm'] = support_vector_machine_features()
     results['rf'] = random_forest_features()
     results['xgb'] = xg_boost_features()
     print(results)
@@ -174,7 +174,7 @@ def run_all_baselines(X_train, X_test, y_train, y_test):
     results = {}
 
     results['lr'] = logistic_regression(X_train, X_test, y_train, y_test)
-    results['svm'] = support_vector_machine(X_train, X_test, y_train, y_test)
+    # results['svm'] = support_vector_machine(X_train, X_test, y_train, y_test)
     results['rf'] = random_forest(X_train, X_test, y_train, y_test)
     results['xgb'] = xg_boost(X_train, X_test, y_train, y_test)
 
