@@ -82,7 +82,7 @@ def per_bin_means(binned: List[np.ndarray]) -> Tuple[np.ndarray, np.ndarray, np.
     mean_y = np.full(n_bins, np.nan, dtype=float)
     counts_per_bin = np.full(n_bins, 0, dtype=int)
     for k, pts in enumerate(binned):
-        counts_per_bin[k] = pts.size
+        counts_per_bin[k] = len(pts)
         if pts.size == 0:
             continue
         mean_p[k] = float(np.mean(pts[:, 0]))
