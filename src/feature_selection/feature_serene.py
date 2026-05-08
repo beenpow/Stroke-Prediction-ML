@@ -29,7 +29,7 @@ X_train, X_test, y_train, y_test = get_stroke_data_for_cv("../data/knn-standardi
 def logistic_regression(X_train, X_test, y_train, y_test):
     results = {}
 
-    lr = LogisticRegression(random_state=42, C=0.1, class_weight='balanced', solver='newton-cg')
+    lr = LogisticRegression(C=0.001, class_weight='balanced', solver='liblinear')
 
     lr.fit(X=X_train, y=y_train)
 
@@ -49,30 +49,29 @@ def logistic_regression(X_train, X_test, y_train, y_test):
 
     return results
 
-def support_vector_machine(X_train, X_test, y_train, y_test):
-    svm = SVC(C=10.0, class_weight='balanced', gamma=0.01, kernel='rbf')
+# def support_vector_machine(X_train, X_test, y_train, y_test):
+#     svm = SVC(C=10.0, class_weight='balanced', gamma=1, kernel='rbf')
 
-    svm.fit(X=X_train, y=y_train)
+#     svm.fit(X=X_train, y=y_train)
 
-    svm_train_preds = svm.predict(X_train)
-    svm_preds = svm.predict(X_test)
+#     svm_train_preds = svm.predict(X_train)
+#     svm_preds = svm.predict(X_test)
 
-    results = {
-        "train": {"accuracy": accuracy_score(y_train, svm_train_preds),
-                    "f1": f1_score(y_train, svm_train_preds),
-                    "precision": precision_score(y_train, svm_train_preds),
-                    "recall": recall_score(y_train, svm_train_preds)},
-        "test": {"accuracy": accuracy_score(y_test, svm_preds),
-                    "f1": f1_score(y_test, svm_preds),
-                    "precision": precision_score(y_test, svm_preds),
-                    "recall": recall_score(y_test, svm_preds)},
-    }
+#     results = {
+#         "train": {"accuracy": accuracy_score(y_train, svm_train_preds),
+#                     "f1": f1_score(y_train, svm_train_preds),
+#                     "precision": precision_score(y_train, svm_train_preds),
+#                     "recall": recall_score(y_train, svm_train_preds)},
+#         "test": {"accuracy": accuracy_score(y_test, svm_preds),
+#                     "f1": f1_score(y_test, svm_preds),
+#                     "precision": precision_score(y_test, svm_preds),
+#                     "recall": recall_score(y_test, svm_preds)},
+#     }
 
-    return results
+#     return results
 
 def random_forest(X_train, X_test, y_train, y_test):
-    rf = RandomForestClassifier(bootstrap=True, class_weight='balanced_subsample', max_depth=15, max_features=None, max_leaf_nodes=15, n_estimators=20)
-
+    rf = RandomForestClassifier(bootstrap=False, class_weight='balanced_subsample', max_depth=None, max_features=None, max_leaf_nodes=None, n_estimators=15)
     rf.fit(X=X_train, y=y_train)
 
     rf_train_preds = rf.predict(X_train)
@@ -92,7 +91,7 @@ def random_forest(X_train, X_test, y_train, y_test):
     return results 
 
 def xg_boost(X_train, X_test, y_train, y_test):
-    xgb = XGBClassifier(eta=1, gamma=1, reg_lambda=0.5, max_depth=15, objective='binary:logistic', subsample=1)
+    xgb = XGBClassifier(eta=1, gamma=2, reg_lambda=0.5, max_depth=6, objective='binary:logistic', subsample=0.1, scale_pos_weight=19)
 
     xgb.fit(X=X_train, y=y_train)
 
@@ -114,7 +113,7 @@ def xg_boost(X_train, X_test, y_train, y_test):
 
 
 def logistic_regression_features():
-    lr = LogisticRegression(random_state=42, C=0.1, class_weight='balanced', solver='newton-cg')
+    lr = LogisticRegression(C=0.001, class_weight='balanced', solver='liblinear')
     lr.fit(X_train, y_train)
 
     model = SelectFromModel(lr, prefit=True)
@@ -124,19 +123,19 @@ def logistic_regression_features():
     return logistic_regression(X_new_train, X_new_test, y_train, y_test)
 
 
-def support_vector_machine_features():
-    svm = SVC(C=10.0, class_weight='balanced', gamma=0.01, kernel='linear')
-    svm.fit(X_train, y_train)
+# def support_vector_machine_features():
+#     svm = SVC(C=10.0, class_weight='balanced', gamma=1, kernel='linear')
+#     svm.fit(X_train, y_train)
 
-    model = SelectFromModel(svm, prefit=True)
-    X_new_train = model.transform(X_train)
-    X_new_test = model.transform(X_test)
+#     model = SelectFromModel(svm, prefit=True)
+#     X_new_train = model.transform(X_train)
+#     X_new_test = model.transform(X_test)
 
-    return support_vector_machine(X_new_train, X_new_test, y_train, y_test)
+#     return support_vector_machine(X_new_train, X_new_test, y_train, y_test)
 
 def random_forest_features():
 
-    clf = RandomForestClassifier(n_estimators=50)
+    clf = RandomForestClassifier(bootstrap=False, class_weight='balanced_subsample', max_depth=None, max_features=None, max_leaf_nodes=None, n_estimators=15)
     clf.fit(X_train, y_train)
 
     model = SelectFromModel(clf, prefit=True)
@@ -149,7 +148,7 @@ def random_forest_features():
 
 def xg_boost_features():
 
-    xgb = XGBClassifier(eta=1, gamma=1, reg_lambda=0.5, max_depth=15, objective='binary:logistic', booster='gblinear', subsample=0.5)
+    xgb = XGBClassifier(eta=1, gamma=2, reg_lambda=0.5, max_depth=6, objective='binary:logistic', subsample=0.1, scale_pos_weight=19)
     xgb.fit(X_train, y_train)
 
     model = SelectFromModel(xgb, prefit=True)
@@ -165,7 +164,7 @@ def run_all_l1_features():
     results = {}
 
     results['lr'] = logistic_regression_features()
-    results['svm'] = support_vector_machine_features()
+    # results['svm'] = support_vector_machine_features()
     results['rf'] = random_forest_features()
     results['xgb'] = xg_boost_features()
     print(results)
@@ -175,7 +174,7 @@ def run_all_baselines(X_train, X_test, y_train, y_test):
     results = {}
 
     results['lr'] = logistic_regression(X_train, X_test, y_train, y_test)
-    results['svm'] = support_vector_machine(X_train, X_test, y_train, y_test)
+    # results['svm'] = support_vector_machine(X_train, X_test, y_train, y_test)
     results['rf'] = random_forest(X_train, X_test, y_train, y_test)
     results['xgb'] = xg_boost(X_train, X_test, y_train, y_test)
 

@@ -30,10 +30,14 @@ from xgboost import XGBClassifier
 
 from sklearn.metrics import accuracy_score, f1_score, precision_score, recall_score
 
-def logistic_regression(X_train, X_test, y_train, y_test):
+def logistic_regression(X_train, X_test, y_train, y_test, use_class_weights=False):
     results = {}
 
-    lr = LogisticRegression(random_state=42, C=0.1, class_weight='balanced', solver='newton-cg')
+    lr = LogisticRegression(
+        C=0.001,
+        solver="liblinear",
+        **({"class_weight": "balanced"} if use_class_weights else {}),
+    )
 
     lr.fit(X=X_train, y=y_train)
 
@@ -53,8 +57,13 @@ def logistic_regression(X_train, X_test, y_train, y_test):
 
     return results
 
-def support_vector_machine(X_train, X_test, y_train, y_test):
-    svm = SVC(C=10.0, class_weight='balanced', gamma=0.01, kernel='rbf')
+def support_vector_machine(X_train, X_test, y_train, y_test, use_class_weights=False):
+    svm = SVC(
+        C=10.0,
+        gamma=1,
+        kernel="rbf",
+        **({"class_weight": "balanced"} if use_class_weights else {}),
+    )
 
     svm.fit(X=X_train, y=y_train)
 
@@ -74,8 +83,15 @@ def support_vector_machine(X_train, X_test, y_train, y_test):
 
     return results
 
-def random_forest(X_train, X_test, y_train, y_test):
-    rf = RandomForestClassifier(bootstrap=True, class_weight='balanced_subsample', max_depth=10, max_features=None, max_leaf_nodes=15, n_estimators=20)
+def random_forest(X_train, X_test, y_train, y_test, use_class_weights=False):
+    rf = RandomForestClassifier(
+        bootstrap=False,
+        max_depth=None,
+        max_features=None,
+        max_leaf_nodes=None,
+        n_estimators=15,
+        **({"class_weight": "balanced_subsample"} if use_class_weights else {}),
+    )
 
     rf.fit(X=X_train, y=y_train)
 
@@ -117,7 +133,7 @@ def xg_boost(X_train, X_test, y_train, y_test):
     return results
 
 def naive_bayes(X_train, X_test, y_train, y_test):
-    gnb = GaussianNB(priors=None, var_smoothing=1e-09)
+    gnb = GaussianNB(priors=None, var_smoothing=1e-11)
 
     gnb.fit(X=X_train, y=y_train)
 
@@ -138,7 +154,7 @@ def naive_bayes(X_train, X_test, y_train, y_test):
     return results
 
 def k_nearest_neighbors(X_train, X_test, y_train, y_test):
-    knn = KNeighborsClassifier(algorithm='auto', leaf_size=30, metric='minkowski', metric_params=None, n_jobs= None, n_neighbors=1, p=2, weights='uniform') 
+    knn = KNeighborsClassifier(algorithm='auto', leaf_size=30, metric='minkowski', metric_params=None, n_jobs= None, n_neighbors=1, p=2) 
     
     knn.fit(X=X_train, y=y_train)
 
@@ -160,7 +176,7 @@ def k_nearest_neighbors(X_train, X_test, y_train, y_test):
     return results
 
 def multi_layer_perceptron(X_train, X_test, y_train, y_test):
-    mlp = MLPClassifier(random_state=42, alpha=0.001, hidden_layer_sizes=(100, 100, 100, 100, 100), max_iter=200, solver='adam')
+    mlp = MLPClassifier(alpha=0.001, hidden_layer_sizes=(100, 100, 100, 100, 100), max_iter=200, solver='adam')
 
     mlp.fit(X=X_train, y=y_train)
 
@@ -181,12 +197,17 @@ def multi_layer_perceptron(X_train, X_test, y_train, y_test):
     return results
 
 
-def run_all_baselines(X_train, X_test, y_train, y_test):
+def run_all_baselines(X_train, X_test, y_train, y_test, use_class_weights=False):
+    """If ``use_class_weights`` is True, LR/SVM/RF use sklearn class weights; other models unchanged."""
     results = {}
 
-    results['lr'] = logistic_regression(X_train, X_test, y_train, y_test)
-    results['svm'] = support_vector_machine(X_train, X_test, y_train, y_test)
-    results['rf'] = random_forest(X_train, X_test, y_train, y_test)
+    results["lr"] = logistic_regression(
+        X_train, X_test, y_train, y_test, use_class_weights
+    )
+    results["svm"] = support_vector_machine(
+        X_train, X_test, y_train, y_test, use_class_weights
+    )
+    results["rf"] = random_forest(X_train, X_test, y_train, y_test, use_class_weights)
     results['xgb'] = xg_boost(X_train, X_test, y_train, y_test)
     results['nb'] = naive_bayes(X_train, X_test, y_train, y_test)
     results['knn'] = k_nearest_neighbors(X_train, X_test, y_train, y_test)

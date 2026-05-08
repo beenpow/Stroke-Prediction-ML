@@ -17,7 +17,6 @@ import sklearn
 import scipy
 import numpy as np
 from stroke_data import get_stroke_data_for_cv, get_stroke_data
-from all_baselines import run_all_baselines
 from pprint import pprint
 
 from sklearn.linear_model import LogisticRegression
@@ -26,7 +25,6 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.naive_bayes import GaussianNB
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.neural_network import MLPClassifier
-from imblearn.over_sampling import RandomOverSampler
 
 from xgboost import XGBClassifier
 
@@ -35,7 +33,7 @@ from sklearn.metrics import accuracy_score, f1_score, precision_score, recall_sc
 def logistic_regression(X_train, X_test, y_train, y_test):
     results = {}
 
-    lr = LogisticRegression(random_state=42, C=0.001, class_weight='balanced', solver='liblinear')
+    lr = LogisticRegression(C=0.001, class_weight='balanced', solver='liblinear')
 
     lr.fit(X=X_train, y=y_train)
 
@@ -56,7 +54,7 @@ def logistic_regression(X_train, X_test, y_train, y_test):
     return results
 
 def support_vector_machine(X_train, X_test, y_train, y_test):
-    svm = SVC(C=1.0, class_weight=None, gamma=100, kernel='rbf')
+    svm = SVC(C=10.0, class_weight='balanced', gamma=1, kernel='rbf')
 
     svm.fit(X=X_train, y=y_train)
 
@@ -77,7 +75,7 @@ def support_vector_machine(X_train, X_test, y_train, y_test):
     return results
 
 def random_forest(X_train, X_test, y_train, y_test):
-    rf = RandomForestClassifier(bootstrap=True, class_weight='balanced_subsample', max_depth=None, max_features=None, max_leaf_nodes=15, n_estimators=15)
+    rf = RandomForestClassifier(bootstrap=False, class_weight='balanced_subsample', max_depth=None, max_features=None, max_leaf_nodes=None, n_estimators=15)
 
     rf.fit(X=X_train, y=y_train)
 
@@ -98,7 +96,7 @@ def random_forest(X_train, X_test, y_train, y_test):
     return results
 
 def xg_boost(X_train, X_test, y_train, y_test):
-    xgb = XGBClassifier(eta=1, gamma=2, reg_lambda=0.5, max_depth=6, objective='binary:logistic', subsample=0.1)
+    xgb = XGBClassifier(eta=1, gamma=2, reg_lambda=0.5, max_depth=6, objective='binary:logistic', subsample=0.1, scale_pos_weight=19)
 
     xgb.fit(X=X_train, y=y_train)
 
@@ -119,7 +117,7 @@ def xg_boost(X_train, X_test, y_train, y_test):
     return results
 
 def naive_bayes(X_train, X_test, y_train, y_test):
-    gnb = GaussianNB(priors=None, var_smoothing=1e-09)
+    gnb = GaussianNB(priors=[0.5, 0.5], var_smoothing=1e-11)
 
     gnb.fit(X=X_train, y=y_train)
 
@@ -140,8 +138,8 @@ def naive_bayes(X_train, X_test, y_train, y_test):
     return results
 
 def k_nearest_neighbors(X_train, X_test, y_train, y_test):
-    knn = KNeighborsClassifier(algorithm='auto', leaf_size=30, metric='minkowski', metric_params=None, n_jobs= None, n_neighbors=1, p=2, weights='uniform') 
-    
+    knn = KNeighborsClassifier(algorithm='auto', leaf_size=30, metric='minkowski', n_neighbors=1, weights='uniform')
+
     knn.fit(X=X_train, y=y_train)
 
     knn_preds = knn.predict(X_test)
@@ -161,29 +159,8 @@ def k_nearest_neighbors(X_train, X_test, y_train, y_test):
 
     return results
 
-def multi_layer_perceptron(X_train, X_test, y_train, y_test):
-    mlp = MLPClassifier(random_state=42, alpha=0.0001, hidden_layer_sizes=(100, 100, 100, 100, 100), max_iter=200, solver='adam')
 
-    mlp.fit(X=X_train, y=y_train)
-
-    mlp_preds = mlp.predict(X_test)
-    mlp_train_preds = mlp.predict(X_train)
-
-    results = {
-        "train": {"accuracy": accuracy_score(y_train, mlp_train_preds),
-                    "f1": f1_score(y_train, mlp_train_preds),
-                    "precision": precision_score(y_train, mlp_train_preds),
-                    "recall": recall_score(y_train, mlp_train_preds)},
-        "test": {"accuracy": accuracy_score(y_test, mlp_preds),
-                    "f1": f1_score(y_test, mlp_preds),
-                    "precision": precision_score(y_test, mlp_preds),
-                    "recall": recall_score(y_test, mlp_preds)},
-    }
-
-    return results
-
-
-def run_all_ro(X_train, X_test, y_train, y_test):
+def run_weighted_baselines(X_train, X_test, y_train, y_test):
     results = {}
 
     results['lr'] = logistic_regression(X_train, X_test, y_train, y_test)
@@ -192,16 +169,8 @@ def run_all_ro(X_train, X_test, y_train, y_test):
     results['xgb'] = xg_boost(X_train, X_test, y_train, y_test)
     results['nb'] = naive_bayes(X_train, X_test, y_train, y_test)
     results['knn'] = k_nearest_neighbors(X_train, X_test, y_train, y_test)
-    results['mlp'] = multi_layer_perceptron(X_train, X_test, y_train, y_test)
 
     return results
 
-X_train, X_test, y_train, y_test = get_stroke_data_for_cv("data/knn-standardize-distance.csv")
-ros = RandomOverSampler(random_state=42)
-X_train_res, y_train_res = ros.fit_resample(X_train, y_train)
-
-print("Baselines")
-pprint(run_all_baselines(X_train_res, X_test, y_train_res, y_test))
-
-print("RO")
-pprint(run_all_ro(X_train, X_test, y_train, y_test))
+# X_train, X_test, y_train, y_test = get_stroke_data_for_cv("data/knn-standardize-distance.csv")
+# pprint(run_all_baselines(X_train, X_test, y_train, y_test))

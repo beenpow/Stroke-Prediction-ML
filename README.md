@@ -1,42 +1,41 @@
-# Stroke Prediction (ML)
+## Stroke Prediction with Class Imbalance: Model Comparison and Handling Strategies
+Nathan Derhake, Chanbin Lim, Serene Saad, Emily Weiss
 
-## Requirements & setup
+CSCI 567 Project 
 
-### Python (PDF build and scripts)
 
-```bash
-python3 -m venv .venv
-source .venv/bin/activate   # Windows: .venv\Scripts\activate
-pip install -r requirements.txt
-```
+## Dataset Source
+The dataset used for this project is the [Kaggle Stroke Prediction Dataset](https://www.kaggle.com/datasets/fedesoriano/stroke-prediction-dataset/data), authored by kaggle user [fedesoriano](https://www.kaggle.com/fedesoriano). 
 
-Notebooks and Python helpers live under **`src/`** (e.g. `src/baseline_final.ipynb`, `src/stroke_data.py`). Open the **repository root** as the workspace. The first code cell in baseline notebooks adds `src` to `sys.path` so `from stroke_data import ...` works; `stroke_data` resolves CSV paths from the repo root. For `src/preprocessing.ipynb`, the first cell switches to the repo root when the kernel’s working directory is `src/`, so `data/...` paths stay valid.
+This dataset has been made public for use for educational purposes. 
 
-**macOS + XGBoost:** if `import xgboost` still fails after `pip install`, install OpenMP once:
+## Repository structure
 
-```bash
-brew install libomp
-```
+stroke_data.py:
+- general file used to access the train/test or train/test/val splits of the preprocessed data
 
-### TeX (for building the proposal PDF with `pdflatex`)
+preprocessing.ipynb:
+- python notebook used to preprocess the data, and produce the various files contained in the data directory
 
-LaTeX is not a pip package; it must be installed on your system. Use the option below for your OS (one-time setup).
+data: 
+- Contains various versions of the preprocessed stroke prediciton dataset
+- Version used for majority of experiments is: knn-standardize-distance.csv
+- Version used for calibration experiments is: **TODO**
 
-| OS | Install |
-|----|---------|
-| **macOS** | `brew install --cask mactex` (or install [MacTeX](https://www.tug.org/mactex/) manually) |
-| **Linux (Debian/Ubuntu)** | `sudo apt install texlive-base texlive-latex-extra` |
-| **Windows** | Install [MiKTeX](https://miktex.org/), then ensure `pdflatex` is available in your terminal |
+src/baseline_models:
+- Contains the code to do gridsearch to find the best parameters for our baseline models
+- Contains the code to train and test the baseline models used for our experiment
 
-After installing TeX:
+src/feature_selection:
+- **todo**
 
-```bash
-cd proposal/tex && pdflatex proposal.tex
-```
 
-To build the PDF without TeX (Python only):
 
-```bash
-cd proposal/tex && python3 build_pdf.py
-# With venv: .venv/bin/python3 build_pdf.py
-```
+## Commands to generate results 
+**todo**
+
+### Baseline Results
+
+### Feature Selection Results
+
+### Class Imbalance Results
