@@ -156,26 +156,91 @@ def find_ECE(confidence, accuracy, counts_per_bin) -> float:
             total += count
     return error/total
 
+def custom_equal_size_bins(data: DataInput, n_bins: int) -> List[Tuple[float, float]]:
+    """
+    This function takes as input a list of (p_i, y_i) pairs and an integer indicating the number of bins.
+    It then returns a list of bins that are equal in size. The bins are specified by the endpoints of the bins.
+    """
+    data = np.asarray(data, dtype=float)
+
+    # If the data is not sorted by p throw an error:
+    if not np.all(np.diff(data[:, 0]) >= 0):
+        raise ValueError("Data must be sorted by p before calling this function")
+    
+    # The bin size starts off big then decreases by one eventually because of the remainder
+    bin_size = data.shape[0] // n_bins + 1
+    remainder = data.shape[0] % n_bins
+    bins = []
+    idx = 0
+    for i in range(n_bins):
+        if i == remainder:
+            bin_size -= 1
+        min_p = data[idx][0]
+        idx += bin_size
+        if i == n_bins - 1:
+            max_p = 1.0
+        else:
+            max_p = data[idx][0]
+        bins.append((min_p, max_p))
+    bins[0] = (0.0, bins[0][1])
+    return bins
+        
+def finest_equal_size_monotonic_bins(data: DataInput) -> List[Tuple[float, float]]:
+    """
+    This function takes as input a list of (p_i, y_i) pairs and an integer indicating the number of bins
+    and returns the finiest equally spaced binning such that the fraction of y's that are positive in each bin is monotonically increasing.
+    """
+    is_monotonic = True
+    n = 1
+    while is_monotonic:
+        print(f"n_bins is {n}")
+        bins = custom_equal_size_bins(data, n)
+        binned = points_per_bin(data, bins=bins)
+        _, mean_y, _ = per_bin_means(binned)
+        if not np.all(np.diff(mean_y) >= 0):
+            is_monotonic = False
+            return custom_equal_size_bins(data, n-1)
+        else:
+            n += 1
+
+    raise StateError("This should never happen")
+
+def find_ECEsweep(data: DataInput) -> float:
+    bins = finest_equal_size_monotonic_bins(data)
+    binned = points_per_bin(data, bins=bins)
+    mean_p, mean_y, counts = per_bin_means(binned)
+    return find_ECE(mean_p, mean_y, counts)
+
+def constant_postprocess(mean_p, mean_y, counts_per_bin):
+    rv = []
+    for i, sz in enumerate(counts_per_bin):
+        for _ in range(sz):
+            rv.append(mean_y[i])
+    return rv
+
 # # Toy data: 10 points
 # data = np.array(
 #     [
 #         [0.05, 0.0],
-#         [0.10, 1.0],
+#         [0.10, 0.0],
 #         [0.15, 0.0],
 #         [0.25, 1.0],
 #         [0.35, 0.0],
 #         [0.50, 1.0],
 #         [0.55, 1.0],
-#         [0.59, 0.0],
+#         [0.59, 1.0],
 #         [0.90, 0.0],
-#         [0.95, 0.0],
+#         [0.95, 1.0],
 #     ]
 # )
-# n_bins = 5
+# n_bins = 4
+# bins = finest_equal_size_monotonic_bins(data)
 # # bins = get_bins(n_bins=5)
-# bins = [(0,0.2), (0.2,0.5), (0.5, 0.6), (0.6, 0.96)]
+# # bins = [(0,0.2), (0.2,0.5), (0.5, 0.6), (0.6, 0.96)]
 # binned = points_per_bin(data, bins=bins)
 # mean_p, mean_y, counts = per_bin_means(binned)
+# print(mean_p, counts
+# )
 # print("mean_p:", mean_p)
 # print("mean_y:", mean_y)
 # print(f"the ECE is {find_ECE(mean_p, mean_y, counts)}")
