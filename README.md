@@ -39,3 +39,11 @@ src/feature_selection:
 ### Feature Selection Results
 
 ### Class Imbalance Results
+
+##### Calibration
+
+For generating all calibration results and figures
+```c:/[FILEPATH]/Stroke-Prediction-ML/venv/Scripts/python.exe c:/Users/natha/github/Stroke-Prediction-ML/src/calibration_experiments.py```
+
+For testing functions in ```calibration.py```
+```c:/[FILEPATH]/Stroke-Prediction-ML/venv/Scripts/python.exe c:/Users/natha/github/Stroke-Prediction-ML/src/calibration.py```
