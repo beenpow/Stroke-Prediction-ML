@@ -161,7 +161,5 @@ def run_weighted_baselines(X_train, X_test, y_train, y_test):
     results['svm'] = support_vector_machine(X_train, X_test, y_train, y_test)
     results['rf'] = random_forest(X_train, X_test, y_train, y_test)
     results['xgb'] = xg_boost(X_train, X_test, y_train, y_test)
-    # results['nb'] = naive_bayes(X_train, X_test, y_train, y_test)
-    # results['knn'] = k_nearest_neighbors(X_train, X_test, y_train, y_test)
 
     return results
