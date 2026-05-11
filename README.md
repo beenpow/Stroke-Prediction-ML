@@ -34,6 +34,10 @@ src/feature_selection:
 ## Commands to generate results 
 **todo**
 
+### Installing Packages
+run ```pip install -r requirements.txt```
+
+
 ### Baseline Results
 To produce the results discussed in the Baseline Models section, we run the cells in the ```baseline/baseline.ipynb``` notebook under the header: "Run baselines for writeup". 
 This produces train and test results for the baseline models with the chosen hyperparameters via Grid Search, as shown earlier in the file. 
