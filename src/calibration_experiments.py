@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 from stroke_data import get_stroke_data_for_cv
 from sklearn.metrics import accuracy_score, f1_score, precision_score, recall_score
 
-from baseline_models.f1_helper import *
+from f1_helper import *
 from calibration import *
 from stroke_data import get_stroke_data_for_cv
 
