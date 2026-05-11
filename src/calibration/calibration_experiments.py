@@ -1,14 +1,17 @@
 ###### Imports ######
 
+import sys
+from pathlib import Path
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+
 import numpy as np
 from sklearn.neural_network import MLPClassifier
 import matplotlib.pyplot as plt
 
-from stroke_data import get_stroke_data_for_cv
 from sklearn.metrics import accuracy_score, f1_score, precision_score, recall_score
 
-from f1_helper import *
-from calibration import *
+from calibration.f1_helper import *
+from calibration.calibration import *
 from stroke_data import get_stroke_data_for_cv
 
 

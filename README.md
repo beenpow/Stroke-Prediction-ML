@@ -65,8 +65,8 @@ This produces the train and test results for the models using the same hyperpara
 
 For generating all calibration results and figures:
 
-```c:/[FILEPATH]/Stroke-Prediction-ML/venv/Scripts/python.exe c:/Users/natha/github/Stroke-Prediction-ML/src/calibration_experiments.py```
+```c:/[FILEPATH]/Stroke-Prediction-ML/venv/Scripts/python.exe c:/Users/natha/github/Stroke-Prediction-ML/src/calibration/calibration_experiments.py```
 
 For testing functions in ```calibration.py```:
 
-```c:/[FILEPATH]/Stroke-Prediction-ML/venv/Scripts/python.exe c:/Users/natha/github/Stroke-Prediction-ML/src/calibration.py```
+```c:/[FILEPATH]/Stroke-Prediction-ML/venv/Scripts/python.exe c:/Users/natha/github/Stroke-Prediction-ML/src/calibration/calibration.py```
