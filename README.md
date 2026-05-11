@@ -35,6 +35,8 @@ src/feature_selection:
 **todo**
 
 ### Baseline Results
+To produce the results discussed in the Baseline Models section, we run the cells in the ```baseline.ipynb``` notebook under the header: "Run baselines for writeup". 
+This produces train and test results for the baseline models with the chosen hyperparameters via Grid Search, as shown earlier in the file. 
 
 ### Feature Selection Results
 
