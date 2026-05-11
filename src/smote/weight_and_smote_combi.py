@@ -14,7 +14,7 @@ import numpy as np
 from imblearn.over_sampling import SMOTE
 
 from stroke_data import get_stroke_data_for_cv
-from all_baselines import run_all_baselines
+from weighted_baselines import run_weighted_baselines
 
 
 def main():
@@ -32,9 +32,7 @@ def main():
 
     print("\nSMOTE + class weights on lr/svm/rf:\n")
     pprint(
-        run_all_baselines(
-            X_train_res, X_test, y_train_res, y_test, use_class_weights=True
-        )
+        run_weighted_baselines(X_train_res, X_test, y_train_res, y_test)
     )
 
 
