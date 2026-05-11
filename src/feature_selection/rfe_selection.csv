@@ -1,0 +1,11 @@
+feature,selected,ranking
+Residence_type,True,1
+age,True,1
+avg_glucose_level,True,1
+bmi,True,1
+ever_married,True,1
+gender,True,1
+heart_disease,True,1
+hypertension,True,1
+work_type,False,2
+smoking_status,False,3
