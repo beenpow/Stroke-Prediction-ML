@@ -56,6 +56,11 @@ To produce the results discussed in the Random Forest Feature Importance section
 To produce the results discussed in the Random Oversampling section, we run the cells up to the "Logistic Regression" header in the ```random_oversampling/random_oversampling.ipynb``` notebook.
 This produces the train and test results for the models using the same hyperparameters as the baselines, but with a randomly oversampled training set. 
 
+##### Artificial Minority Neighbors
+
+To produce the results discussed in the Artificial Minority Neighbors section, we run the cells up to the "New hyperparameters for neighbors" header in the ```neighbors/neighbors.ipynb``` notebook.
+This produces the train and test results for the models using the same hyperparameters as the baselines, but with a randomly oversampled training set. 
+
 ##### Calibration
 
 For generating all calibration results and figures:
