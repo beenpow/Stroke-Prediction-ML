@@ -30,14 +30,10 @@ from xgboost import XGBClassifier
 
 from sklearn.metrics import accuracy_score, f1_score, precision_score, recall_score
 
-def logistic_regression(X_train, X_test, y_train, y_test, use_class_weights=False):
+def logistic_regression(X_train, X_test, y_train, y_test):
     results = {}
 
-    lr = LogisticRegression(
-        C=0.001,
-        solver="liblinear",
-        **({"class_weight": "balanced"} if use_class_weights else {}),
-    )
+    lr = LogisticRegression(C=0.001, solver='liblinear')
 
     lr.fit(X=X_train, y=y_train)
 
@@ -57,13 +53,8 @@ def logistic_regression(X_train, X_test, y_train, y_test, use_class_weights=Fals
 
     return results
 
-def support_vector_machine(X_train, X_test, y_train, y_test, use_class_weights=False):
-    svm = SVC(
-        C=10.0,
-        gamma=1,
-        kernel="rbf",
-        **({"class_weight": "balanced"} if use_class_weights else {}),
-    )
+def support_vector_machine(X_train, X_test, y_train, y_test):
+    svm = SVC(C=10.0, gamma=1, kernel='rbf')
 
     svm.fit(X=X_train, y=y_train)
 
@@ -83,15 +74,8 @@ def support_vector_machine(X_train, X_test, y_train, y_test, use_class_weights=F
 
     return results
 
-def random_forest(X_train, X_test, y_train, y_test, use_class_weights=False):
-    rf = RandomForestClassifier(
-        bootstrap=False,
-        max_depth=None,
-        max_features=None,
-        max_leaf_nodes=None,
-        n_estimators=15,
-        **({"class_weight": "balanced_subsample"} if use_class_weights else {}),
-    )
+def random_forest(X_train, X_test, y_train, y_test):
+    rf = RandomForestClassifier(bootstrap=False, max_depth=None, max_features=None, max_leaf_nodes=None, n_estimators=15)
 
     rf.fit(X=X_train, y=y_train)
 
@@ -197,17 +181,12 @@ def multi_layer_perceptron(X_train, X_test, y_train, y_test):
     return results
 
 
-def run_all_baselines(X_train, X_test, y_train, y_test, use_class_weights=False):
-    """If ``use_class_weights`` is True, LR/SVM/RF use sklearn class weights; other models unchanged."""
+def run_all_baselines(X_train, X_test, y_train, y_test):
     results = {}
 
-    results["lr"] = logistic_regression(
-        X_train, X_test, y_train, y_test, use_class_weights
-    )
-    results["svm"] = support_vector_machine(
-        X_train, X_test, y_train, y_test, use_class_weights
-    )
-    results["rf"] = random_forest(X_train, X_test, y_train, y_test, use_class_weights)
+    results['lr'] = logistic_regression(X_train, X_test, y_train, y_test)
+    results['svm'] = support_vector_machine(X_train, X_test, y_train, y_test)
+    results['rf'] = random_forest(X_train, X_test, y_train, y_test)
     results['xgb'] = xg_boost(X_train, X_test, y_train, y_test)
     results['nb'] = naive_bayes(X_train, X_test, y_train, y_test)
     results['knn'] = k_nearest_neighbors(X_train, X_test, y_train, y_test)
