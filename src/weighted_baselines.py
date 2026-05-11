@@ -13,12 +13,6 @@ else:
 
 sys.path.insert(0, str(REPO_ROOT / "src"))
 
-import sklearn
-import scipy
-import numpy as np
-from stroke_data import get_stroke_data_for_cv, get_stroke_data
-from pprint import pprint
-
 from sklearn.linear_model import LogisticRegression
 from sklearn.svm import SVC
 from sklearn.ensemble import RandomForestClassifier
