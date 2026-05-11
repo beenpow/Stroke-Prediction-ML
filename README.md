@@ -49,7 +49,7 @@ To produce the results discussed in the SMOTE section, we run the python file ``
 
 ##### Class Weights
 
-To produce the results discussed in the Class Weights section, we run the cells underneath the "Final Results for Writeup" section in the ```class weights imbalance method/class_weights.ipynb``` file. 
+To produce the results discussed in the Class Weights section, we run the cells up to the "Logistic Regression" header, and the cells underneath the "Final Results for Writeup" section in the ```class weights imbalance method/class_weights.ipynb``` file. 
 
 ##### Combinations of Approaches
 
