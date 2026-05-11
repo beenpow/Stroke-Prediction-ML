@@ -9,26 +9,6 @@ The dataset used for this project is the [Kaggle Stroke Prediction Dataset](http
 
 This dataset has been made public for use for educational purposes. 
 
-## Repository structure
-
-stroke_data.py:
-- general file used to access the train/test or train/test/val splits of the preprocessed data
-
-preprocessing.ipynb:
-- python notebook used to preprocess the data, and produce the various files contained in the data directory
-
-data: 
-- Contains various versions of the preprocessed stroke prediciton dataset
-- Version used for majority of experiments is: knn-standardize-distance.csv
-- Version used for calibration experiments is: **TODO**
-
-src/baseline_models:
-- Contains the code to do gridsearch to find the best parameters for our baseline models
-- Contains the code to train and test the baseline models used for our experiment
-
-src/feature_selection:
-- **todo**
-
 
 
 ## Commands to generate results 
@@ -47,6 +27,14 @@ This produces train and test results for the baseline models with the chosen hyp
 #### Feature Importance
 
 To produce the results discussed in the Random Forest Feature Importance section, we run the python notebook: ```importance_rf_presentation.ipynb```
+
+#### RFE
+
+To produce the results discussed in the RFE section, we run the python notebook: ```rfe_presentation.ipynb```
+
+#### Importance Based Feature Selection Per Model
+
+To produce the results discussed in this section, we run the python notebook ```feature_selection_notebook.ipynb```, and the file ```feature_selection_by_importance.py```.
 
 
 ### Class Imbalance Results
