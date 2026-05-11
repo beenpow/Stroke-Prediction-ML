@@ -44,6 +44,21 @@ To produce the results discussed in this section, we run the python notebook ```
 To produce the results discussed in the Random Oversampling section, we run the cells up to the "Logistic Regression" header in the ```random_oversampling/random_oversampling.ipynb``` notebook.
 This produces the train and test results for the models using the same hyperparameters as the baselines, but with a randomly oversampled training set. 
 
+##### SMOTE
+
+To produce the results discussed in the SMOTE section, we run the python file ```smote/smote_baselines.py```.
+
+##### Class Weights
+
+To produce the results discussed in the Class Weights section, we run the cells underneath the "Final Results for Writeup" section in the ```class weights imbalance method/class_weights.ipynb``` file. 
+
+##### Combinations of Approaches
+
+To produce the class weights + SMOTE results in the writeup, we run the python file ```smote/weight_and_smote_combi.py```.
+
+To produce the class weights + random oversampling results in the writeup, we run the cells up to the "Logistic Regression" header in ```cw_ro/weighted_random_oversampling.ipynb```.  
+
+
 ##### Artificial Minority Neighbors
 
 To produce the results discussed in the Artificial Minority Neighbors section, we run the cells up to the "New hyperparameters for neighbors" header in the ```neighbors/neighbors.ipynb``` notebook.
