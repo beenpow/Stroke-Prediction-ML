@@ -38,6 +38,11 @@ src/feature_selection:
 
 ### Feature Selection Results
 
+#### Feature Importance
+
+To produce the results discussed in the Random Forest Feature Importance section, we run the python notebook: ```importance_rf_presentation.ipynb```
+
+
 ### Class Imbalance Results
 
 ##### Calibration
