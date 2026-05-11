@@ -165,6 +165,3 @@ def run_weighted_baselines(X_train, X_test, y_train, y_test):
     # results['knn'] = k_nearest_neighbors(X_train, X_test, y_train, y_test)
 
     return results
-
-X_train, X_test, y_train, y_test = get_stroke_data_for_cv("data/knn-standardize-distance.csv")
-pprint(run_all_baselines(X_train, X_test, y_train, y_test))
