@@ -12,7 +12,6 @@ This dataset has been made public for use for educational purposes.
 
 
 ## Commands to generate results 
-**todo**
 
 ### Installing Packages
 run ```pip install -r requirements.txt```
@@ -66,10 +65,6 @@ This produces the train and test results for the models using the same hyperpara
 
 ##### Calibration
 
-For generating all calibration results and figures:
+For generating all calibration results and figures we run  ```calibration/calibration_experiments.py```
 
-```c:/[FILEPATH]/Stroke-Prediction-ML/venv/Scripts/python.exe c:/Users/natha/github/Stroke-Prediction-ML/src/calibration/calibration_experiments.py```
-
-For testing functions in ```calibration.py```:
-
-```c:/[FILEPATH]/Stroke-Prediction-ML/venv/Scripts/python.exe c:/Users/natha/github/Stroke-Prediction-ML/src/calibration/calibration.py```
+For testing functions in ```calibration.py``` we run ```calibration/calibration.py```
