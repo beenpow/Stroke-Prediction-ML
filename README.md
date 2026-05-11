@@ -35,7 +35,7 @@ src/feature_selection:
 **todo**
 
 ### Baseline Results
-To produce the results discussed in the Baseline Models section, we run the cells in the ```baseline.ipynb``` notebook under the header: "Run baselines for writeup". 
+To produce the results discussed in the Baseline Models section, we run the cells in the ```baseline/baseline.ipynb``` notebook under the header: "Run baselines for writeup". 
 This produces train and test results for the baseline models with the chosen hyperparameters via Grid Search, as shown earlier in the file. 
 
 ### Feature Selection Results
@@ -46,6 +46,11 @@ To produce the results discussed in the Random Forest Feature Importance section
 
 
 ### Class Imbalance Results
+
+##### Random Oversampling
+
+To produce the results discussed in the Random Oversampling section, we run the cells up to the "Logistic Regression" header in the ```random_oversampling/random_oversampling.ipynb``` notebook.
+This produces the train and test results for the models using the same hyperparameters as the baselines, but with a randomly oversampled training set. 
 
 ##### Calibration
 
